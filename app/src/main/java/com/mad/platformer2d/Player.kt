@@ -1,21 +1,24 @@
 package com.mad.platformer2d
 
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.Paint
+import android.graphics.Path
 
-class Player(internal var posX: Int, internal var posY: Int, internal val size: Int) {
-    fun draw(canvas: Canvas) {
-        val paint = Paint().apply {
-            color = Color.GREEN
+class Player(var posX: Int, var posY: Int, internal val size: Int) {
+    private val borderSize = 10
+
+    fun draw(canvas: Canvas, bitmap: Bitmap) {
+        val matrix = Matrix().apply {
+            postScale(0.4f, 0.4f)
         }
-        canvas.drawRect(
-            posX.toFloat(),
-            posY.toFloat(),
-            (posX + size).toFloat(),
-            (posY + size).toFloat(),
-            paint
-        )
+
+        val scaledBitmap =
+            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
+        canvas.drawBitmap(scaledBitmap, posX.toFloat() - 50, posY.toFloat() - 200, null)
     }
 
     fun updatePosition(newX: Int, screenWidth: Int) {
