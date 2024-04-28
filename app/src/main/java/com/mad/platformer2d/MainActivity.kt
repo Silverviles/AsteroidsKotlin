@@ -7,7 +7,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val gamePanel : GamePanel = GamePanel(this)
+        val gamePanel: GamePanel = GamePanel(this)
         setContentView(gamePanel)
     }
 }

@@ -24,9 +24,9 @@ class ScoreActivity : AppCompatActivity() {
 
         saveScoreToLocal(intent.getIntExtra("score", 0))
 
-        val exitMenuButton : Button = findViewById(R.id.exitMenu)
-        val exitGameButton : Button = findViewById(R.id.exitGame)
-        val highScoreTextView : TextView = findViewById(R.id.high_score)
+        val exitMenuButton: Button = findViewById(R.id.exitMenu)
+        val exitGameButton: Button = findViewById(R.id.exitGame)
+        val highScoreTextView: TextView = findViewById(R.id.high_score)
         val highScore = getHighScoreFromPreferences()
         val score = intent.getIntExtra("score", 0)
         val showScoreTextView = findViewById<TextView>(R.id.show_score)
@@ -34,23 +34,25 @@ class ScoreActivity : AppCompatActivity() {
         highScoreTextView.text = getString((R.string.high_score_text), highScore)
         showScoreTextView.text = getString(R.string.score_text, score)
 
-        exitMenuButton.setOnClickListener{
+        exitMenuButton.setOnClickListener {
             val intent = Intent(this, StartScreen::class.java)
             startActivity(intent)
         }
-        exitGameButton.setOnClickListener{
+        exitGameButton.setOnClickListener {
             finishAndRemoveTask()
             finishAffinity()
         }
     }
 
     private fun getHighScoreFromPreferences(): Int {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("AsteroidScore", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("AsteroidScore", Context.MODE_PRIVATE)
         return sharedPreferences.getInt("highScore", 0)
     }
 
     private fun saveScoreToLocal(score: Int) {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("AsteroidScore", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("AsteroidScore", Context.MODE_PRIVATE)
         val currentScore = sharedPreferences.getInt("highScore", 0)
 
         if (score > currentScore) {

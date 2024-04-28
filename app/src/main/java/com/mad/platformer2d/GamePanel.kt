@@ -17,7 +17,7 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
-import java.util.*
+import java.util.Random
 import java.util.concurrent.CopyOnWriteArrayList
 
 class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback,
@@ -30,8 +30,8 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
     private val backgroundBitmap: Bitmap
     private val playerBitMap: Bitmap
     private val asteroidBitMap: Bitmap
-    private var score : Int = 0
-    private var scorePaint : Paint = Paint().apply {
+    private var score: Int = 0
+    private var scorePaint: Paint = Paint().apply {
         Color.WHITE
         textSize = 40f
     }
@@ -92,7 +92,7 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
                 asteroids.remove(asteroid)
             }
         }
-        checkCollisions(context)
+        checkCollisions()
     }
 
     override fun draw(canvas: Canvas) {
@@ -105,7 +105,15 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
         val matrix = Matrix()
         val scaleFactor = 0.1f
         matrix.postScale(scaleFactor, scaleFactor)
-        val scaledBitmap = Bitmap.createBitmap(asteroidBitMap, 0, 0, asteroidBitMap.width, asteroidBitMap.height, matrix, true)
+        val scaledBitmap = Bitmap.createBitmap(
+            asteroidBitMap,
+            0,
+            0,
+            asteroidBitMap.width,
+            asteroidBitMap.height,
+            matrix,
+            true
+        )
 
         for (asteroid in asteroids) {
             canvas.drawBitmap(
@@ -153,7 +161,7 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
             if (bullet.isOutOfScreen(height)) {
                 bulletsToRemove.add(bullet)
             } else {
-                val bulletRect = Rect(
+                Rect(
                     bullet.posX,
                     bullet.posY,
                     bullet.posX + bullet.size,
@@ -179,8 +187,8 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
         bullets.removeAll(bulletsToRemove)
     }
 
-    private fun checkCollisions(context: Context) {
-        if(player != null) {
+    private fun checkCollisions() {
+        if (player != null) {
             val playerRect = Rect(
                 player!!.posX,
                 player!!.posY,
@@ -190,7 +198,12 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
             val iterator = asteroids.iterator()
             while (iterator.hasNext()) {
                 val asteroid = iterator.next()
-                val asteroidRect = Rect(asteroid.posX, asteroid.posY, asteroid.posX + asteroid.size, asteroid.posY + asteroid.size)
+                val asteroidRect = Rect(
+                    asteroid.posX,
+                    asteroid.posY,
+                    asteroid.posX + asteroid.size,
+                    asteroid.posY + asteroid.size
+                )
                 if (playerRect.intersect(asteroidRect)) {
                     navigateToHighScore()
                     break
@@ -200,7 +213,8 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
     }
 
     private fun saveScoreToLocal(context: Context, score: Int) {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("AsteroidScore", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("AsteroidScore", Context.MODE_PRIVATE)
         val currentScore = sharedPreferences.getInt("highScore", 0)
 
         if (score > currentScore) {
@@ -210,7 +224,7 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
         }
     }
 
-    private fun navigateToHighScore(){
+    private fun navigateToHighScore() {
         val intent = Intent(context, ScoreActivity::class.java)
         intent.putExtra("score", score)
         context.startActivity(intent)

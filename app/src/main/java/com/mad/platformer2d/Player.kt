@@ -2,10 +2,7 @@ package com.mad.platformer2d
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.Path
 
 class Player(var posX: Int, var posY: Int, internal val size: Int) {
     private val borderSize = 10

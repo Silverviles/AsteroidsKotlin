@@ -5,7 +5,7 @@ import android.graphics.Canvas
 
 class Asteroid(var posX: Int, var posY: Int, val size: Int, val asteroidBitmap: Bitmap) {
     fun moveDown() {
-        posY+=5
+        posY += 5
     }
 
     fun draw(canvas: Canvas) {
